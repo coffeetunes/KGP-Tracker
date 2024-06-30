@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import { getPeaks, getUserPeaks } from "../api/dbConnection";
-import { getWikiData } from "../api/wikiConnection";
+import "./Peaks.scss"
+import { getPeaks, getUserPeaks } from "../../api/dbConnection";
+import { getWikiData } from "../../api/wikiConnection";
 import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 

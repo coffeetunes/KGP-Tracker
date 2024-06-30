@@ -4,24 +4,24 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 // style
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './styles/App.scss';
+import './App.scss';
 
 // komponenty
-import Menu from "./Components/Menu";
-import Footer from "./Components/Footer";
-import TransitionWrapper from "./Components/TransitionWrapper";
+import Menu from "./Components/Menu/Menu";
+import Footer from "./Components/Footer/Footer";
+import TransitionWrapper from "./Components/TransitionWrapper/TransitionWrapper";
 import { AuthProvider } from "./context/AuthContext";
 
 // strony
-import Home from "./Pages/Home";
-import About from "./Pages/About";
-import Login from "./Pages/Login";
-import Logout from "./Pages/Logout";
-import Register from "./Pages/Register";
-import Profile from "./Pages/Profile";
-import Peaks from "./Pages/Peaks";
-import PeakDetails from "./Pages/PeakDetails";
-import NotFound from "./Pages/NotFound";
+import Home from "./Pages/Home/Home";
+import About from "./Pages/About/About";
+import Login from "./Pages/Login/Login";
+import Logout from "./Pages/Logout/Logout";
+import Register from "./Pages/Register/Register";
+import Profile from "./Pages/Profile/Profile";
+import Peaks from "./Pages/Peaks/Peaks";
+import PeakDetails from "./Pages/PeakDetails/PeakDetails";
+import NotFound from "./Pages/NotFound/NotFound";
 
 function App() {
     return (

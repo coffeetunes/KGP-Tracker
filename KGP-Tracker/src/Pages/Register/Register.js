@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import "./Register.scss"
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../api/dbConnection";
+import { registerUser } from "../../api/dbConnection";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -37,7 +38,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null); // Resetowanie błędu przed nową walidacją
+    setError(null);
 
     if (password !== confirmPassword) {
       setError("Hasła nie są zgodne.");
@@ -66,7 +67,7 @@ const Register = () => {
       <Row className="w-100 d-flex justify-content-center">
         <Col md={6} lg={6}>
           <h2 className="page-title text-center">Zarejestruj się</h2>
-          <p>Wprowadź dane. Hasło powinno składać się z co najmniej ośmiu znaków oraz zawierać co najmniej jedną cyfrę i co najmniej jeden znak specjalny.</p>
+          <p>Wprowadź dane. Hasło powinno składać się z co najmniej ośmiu znaków, zawierać co najmniej jedną cyfrę i co najmniej jeden znak specjalny.</p>
           {error && <div className="alert alert-danger">{error}</div>}
           {success && <div className="alert alert-success">{success}</div>}
           <form onSubmit={handleSubmit}>

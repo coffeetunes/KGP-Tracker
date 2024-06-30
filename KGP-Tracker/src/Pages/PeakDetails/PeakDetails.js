@@ -1,17 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
+import "./PeakDetails.scss"
 import { Link, useParams } from "react-router-dom";
 import {
   confirmUserPeak,
   getSinglePeak,
   getUserPeaks,
-} from "../api/dbConnection";
-import { getWikiData } from "../api/wikiConnection";
+} from "../../api/dbConnection";
+import { getWikiData } from "../../api/wikiConnection";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 
 const PeakDetails = () => {
   const { id } = useParams();
