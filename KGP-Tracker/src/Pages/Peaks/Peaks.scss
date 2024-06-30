@@ -1,0 +1,61 @@
+.peak-card {
+  position: relative;
+  height: 300px !important;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  color: white;
+  background-size: cover;
+  background-position: center;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  .card-img-overlay {
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+    color: white;
+  }
+
+  .peak-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
+  .peak-info {
+    font-size: 1rem;
+  }
+}
+
+.user-peak {
+  .card-img-overlay {
+    background-color: rgba(0, 128, 0, 0.6);
+  }
+
+  .checkmark-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    color: white;
+  }
+
+  .peak-status {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+}
+
