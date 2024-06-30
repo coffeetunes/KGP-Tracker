@@ -20,7 +20,7 @@ const PeakDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userPeak, setUserPeak] = useState(null);
-  const [firstAscend, setFirstAscend] = useState(false);
+  const [firstAscent, setFirstAscent] = useState(false);
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
@@ -80,7 +80,7 @@ const PeakDetails = () => {
         const today = new Date().toISOString().split("T")[0];
         const newUserPeak = await confirmUserPeak(user.id, id, today);
         setUserPeak(newUserPeak);
-        setFirstAscend(true);
+        setFirstAscent(true);
       } catch (error) {
         console.log(`Błąd podczas zatwierdzania zdobycia szczytu: ${error}`);
       }
@@ -113,19 +113,19 @@ const PeakDetails = () => {
                   <p>
                     <strong>Opis:</strong> {peak.wiki.extract}
                   </p>
-                  {firstAscend && (
+                  {firstAscent && (
                     <Alert variant="success" className="my-3">
                       Gratulacje zdobycia szczytu!
                     </Alert>
                   )}
-                  {userPeak && !firstAscend && (
+                  {userPeak && !firstAscent && (
                     <Alert variant="success" className="my-3">
                       Ten szczyt jest już przez Ciebie zdobyty.
                       <br />
                       Data zdobycia: {userPeak.date}
                     </Alert>
                   )}
-                  {!userPeak && !firstAscend && user && (
+                  {!userPeak && !firstAscent && user && (
                     <Button
                       variant="primary"
                       className="my-3"
@@ -136,7 +136,7 @@ const PeakDetails = () => {
                   )}
                   {!user && (
                     <Alert variant="warning" className="my-3">
-                      <Link to="/login" style={{ textDecoration: "none" }}>
+                      <Link to="/login"  state={{ from: `/peaks/${id}` }}  style={{ textDecoration: "none" }}>
                         Zaloguj się
                       </Link>
                       , aby potwierdzić zdobycie szczytu.
