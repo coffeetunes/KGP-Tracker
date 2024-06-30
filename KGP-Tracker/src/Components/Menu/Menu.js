@@ -1,10 +1,11 @@
 import React from "react";
+import "./Menu.scss"
 import { Link, useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import logo from "../assets/kgp-tracker-logo.svg";
-import { useAuth } from "../context/AuthContext";
+import logo from "../../assets/kgp-tracker-logo.svg";
+import { useAuth } from "../../context/AuthContext";
 
 const Menu = () => {
   const { isLoggedIn, logout } = useAuth();

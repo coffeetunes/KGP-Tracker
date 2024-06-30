@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import "./Login.scss"
 import { Link, useNavigate } from "react-router-dom";
-import { getUser } from "../api/dbConnection";
-import { useAuth } from "../context/AuthContext";
+import { getUser } from "../../api/dbConnection";
+import { useAuth } from "../../context/AuthContext";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
