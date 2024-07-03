@@ -1,11 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import "./PeakDetails.scss"
+import "./PeakDetails.scss";
 import { Link, useParams } from "react-router-dom";
-import {
-  confirmUserPeak,
-  getSinglePeak,
-  getUserPeaks,
-} from "../../api/dbConnection";
+import { confirmUserPeak, getSinglePeak, getUserPeaks } from "../../api/dbConnection";
 import { getWikiData } from "../../api/wikiConnection";
 import AscentConfirmForm from "../../Components/AscentConfirmForm/AscentConfirmForm";
 import Container from "react-bootstrap/Container";
@@ -30,63 +26,49 @@ const PeakDetails = () => {
   }, []);
 
   useEffect(() => {
-    const fetchPeak = async () => {
+    const fetchPeakData = async () => {
       try {
         const peakData = await getSinglePeak(id);
         const wikiResponse = await getWikiData(peakData.wikiName);
 
         const peakWithWikiData = {
           ...peakData,
-          wiki:
-            wikiResponse.type === "standard"
+          wiki: wikiResponse.type === "standard"
               ? wikiResponse
               : { extract: "Brak danych", thumbnail: { source: "" } },
-          imageUrl:
-            wikiResponse.originalimage?.source ||
-            wikiResponse.thumbnail?.source ||
-            "",
+          imageUrl: wikiResponse.originalimage?.source || wikiResponse.thumbnail?.source || "",
         };
 
         setPeak(peakWithWikiData);
-        setLoading(false);
       } catch (error) {
         setError(error.message);
+      } finally {
         setLoading(false);
       }
     };
 
-    const fetchUserPeaks = async () => {
+    const fetchUserPeakData = async () => {
       if (user) {
         try {
           const userPeakResponse = await getUserPeaks(user.id);
-          const userPeakData = userPeakResponse.find(
-            (up) => up.peakId.toString() === id.toString(),
-          );
-          if (userPeakData) {
-            setUserPeak(userPeakData);
-          }
+          const userPeakData = userPeakResponse.find(up => up.peakId.toString() === id.toString());
+          setUserPeak(userPeakData || null);
         } catch (error) {
           console.log(`Błąd podczas ładowania szczytów użytkownika: ${error}`);
         }
       }
     };
 
-    fetchPeak();
-    fetchUserPeaks();
+    fetchPeakData();
+    fetchUserPeakData();
   }, [id, user]);
 
-  const handleShowConfirmForm = (e) => {
-    e.preventDefault();
-    setShowConfirmForm(true);
+  const handleShowConfirmForm = () => setShowConfirmForm(true);
 
-  }
-
-  const handleConfirmClick = async (e) => {
-    e.preventDefault();
+  const handleConfirmClick = async (formData) => {
     if (user) {
       try {
-        const today = new Date().toISOString().split("T")[0];
-        const newUserPeak = await confirmUserPeak(user.id, id, today);
+        const newUserPeak = await confirmUserPeak(user.id, id, formData.date, formData.comment, formData.fileInfo);
         setUserPeak(newUserPeak);
         setFirstAscent(true);
       } catch (error) {
@@ -95,80 +77,63 @@ const PeakDetails = () => {
     }
   };
 
-  if (loading) {
-    return <div>Trwa ładowanie informacji...</div>;
-  }
-
-  if (error) {
-    return <div>Błąd: {error}</div>;
-  }
+  if (loading) return <div>Trwa ładowanie informacji...</div>;
+  if (error) return <div>Błąd: {error}</div>;
 
   return (
-    <Container className="mt-5">
-      {peak && (
-        <Container className="mt-5 peak-details">
-          {peak && (
-            <Row>
-              <Col md={6} className="pe-5">
-                <div className="peak-info">
-                  <h2>{peak.name}</h2>
-                  <p>
-                    <strong>Pasmo:</strong> {peak.range}
-                  </p>
-                  <p>
-                    <strong>Wysokość:</strong> {peak.height} m
-                  </p>
-                  <p>
-                    <strong>Opis:</strong> {peak.wiki.extract}
-                  </p>
-                  {firstAscent && (
-                    <Alert variant="success" className="my-3">
-                      Gratulacje zdobycia szczytu!
-                    </Alert>
+      <Container className="mt-5">
+        {peak && (
+            <Container className="mt-5 peak-details">
+              <Row>
+                <Col md={6} className="pe-5">
+                  <div className="peak-info">
+                    <h2>{peak.name}</h2>
+                    <p><strong>Pasmo:</strong> {peak.range}</p>
+                    <p><strong>Wysokość:</strong> {peak.height} m n.p.m.</p>
+                    <p><strong>Opis:</strong> {peak.wiki.extract}</p>
+                    {firstAscent && <Alert variant="success" className="my-3">Gratulacje zdobycia szczytu!</Alert>}
+                    {userPeak && !firstAscent && (
+                        <Alert variant="success" className="my-3">
+                          Ten szczyt jest już przez Ciebie zdobyty.
+                          <br />
+                          Data zdobycia: {userPeak.date}
+                          <br />
+                          <br/>
+                          Twój komentarz:
+                          <br/>
+                          {userPeak.comment}
+                        </Alert>
+                    )}
+                    {!userPeak && !firstAscent && user && (
+                        !showConfirmForm ? (
+                            <Button variant="primary" className="my-3" onClick={handleShowConfirmForm}>
+                              Potwierdź zdobycie szczytu
+                            </Button>
+                        ) : (
+                            <AscentConfirmForm onSubmit={handleConfirmClick} />
+                        )
+                    )}
+                    {!user && (
+                        <Alert variant="warning" className="my-3">
+                          <Link to="/login" state={{ from: `/peaks/${id}` }} style={{ textDecoration: "none" }}>
+                            Zaloguj się
+                          </Link>
+                          , aby potwierdzić zdobycie szczytu.
+                        </Alert>
+                    )}
+                  </div>
+                </Col>
+                <Col md={6}>
+                  {userPeak?.image?.base64 ? (
+                      <img src={userPeak.image.base64} alt={peak.name} className="peak-image" />
+                  ) : peak.imageUrl && (
+                      <img src={peak.imageUrl} alt={peak.name} className="peak-image" />
                   )}
-                  {userPeak && !firstAscent && (
-                    <Alert variant="success" className="my-3">
-                      Ten szczyt jest już przez Ciebie zdobyty.
-                      <br />
-                      Data zdobycia: {userPeak.date}
-                    </Alert>
-                  )}
-                  {!userPeak && !firstAscent && user && (
-
-                          !showConfirmForm ?
-                          (<Button
-                            variant="primary"
-                            className="my-3"
-                            onClick={handleShowConfirmForm}
-                        >
-                          Potwierdź zdobycie szczytu
-                        </Button>) :
-                        (<AscentConfirmForm />)
-                  )}
-                  {!user && (
-                    <Alert variant="warning" className="my-3">
-                      <Link to="/login"  state={{ from: `/peaks/${id}` }}  style={{ textDecoration: "none" }}>
-                        Zaloguj się
-                      </Link>
-                      , aby potwierdzić zdobycie szczytu.
-                    </Alert>
-                  )}
-                </div>
-              </Col>
-              <Col md={6}>
-                {peak.imageUrl && (
-                  <img
-                    src={peak.imageUrl}
-                    alt={peak.name}
-                    className="peak-image"
-                  />
-                )}
-              </Col>
-            </Row>
-          )}
-        </Container>
-      )}
-    </Container>
+                </Col>
+              </Row>
+            </Container>
+        )}
+      </Container>
   );
 };
 

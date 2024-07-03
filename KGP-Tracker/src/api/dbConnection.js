@@ -80,12 +80,14 @@ export const getUserPeaks = async (userId) => {
 };
 
 // urposzczone zatwierdzanie zdobycia szczytu
-export const confirmUserPeak = async (userId, peakId, date) => {
+export const confirmUserPeak = async (userId, peakId, date, comment, image) => {
   try {
     const newUserPeak = {
       userId,
       peakId,
       date,
+      comment,
+      image
     };
     await dbAxios.post(`/userPeaks`, newUserPeak);
     return newUserPeak;

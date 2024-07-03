@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 
-const AscentConfirmForm = () => {
+const AscentConfirmForm = ({ onSubmit }) => {
     const [date, setDate] = useState('');
     const [comment, setComment] = useState('');
-    const [file, setFile] = useState(null);
     const [fileInfo, setFileInfo] = useState(null);
     const [error, setError] = useState(null);
 
@@ -12,20 +11,17 @@ const AscentConfirmForm = () => {
         const selectedFile = e.target.files[0];
         if (selectedFile && !selectedFile.type.startsWith('image/')) {
             setError('Plik musi być obrazem (JPEG, PNG, GIF).');
-            setFile(null);
             setFileInfo(null);
         } else {
             setError(null);
             const reader = new FileReader();
             reader.readAsDataURL(selectedFile);
             reader.onload = () => {
-                setFile(selectedFile);
                 setFileInfo({
                     name: selectedFile.name,
                     type: selectedFile.type,
                     size: Math.round(selectedFile.size / 1000) + ' kB',
-                    base64: reader.result,
-                    file: selectedFile,
+                    base64: reader.result
                 });
             };
             reader.onerror = (error) => {
@@ -34,27 +30,15 @@ const AscentConfirmForm = () => {
         }
     };
 
-    const onSubmit = (data) => {
-        console.log(`Data zdobycia szczytu: ${data.date}`);
-        console.log(`----`)
-        console.log(`Komentarz: ${data.comment}`);
-        console.log(`----`);
-        console.log(`Zabejzowane zdjęcie: ${data.file}`)
-        console.log(`----`);
-        console.log(`Informacje o pliku: ${data.fileInfo.base64}`)
-
-    }
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!file) {
+        if (!fileInfo) {
             setError('Proszę załączyć zdjęcie potwierdzające zdobycie szczytu.');
             return;
         }
         const formData = {
             date,
             comment,
-            file,
             fileInfo
         };
         onSubmit(formData);
@@ -94,7 +78,7 @@ const AscentConfirmForm = () => {
                 </Form.Text>
             </Form.Group>
             {error && <Alert variant="danger">{error}</Alert>}
-            <Button type="submit" variant="primary">
+            <Button type="submit" variant="primary" className="mb-3">
                 Potwierdź zdobycie szczytu
             </Button>
         </Form>

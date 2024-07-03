@@ -60,8 +60,7 @@ const Peaks = () => {
 
         if (user) {
           const userPeakResponse = await getUserPeaks(user.id);
-          const userPeaksData = userPeakResponse.map((up) => up.peakId);
-          setUserPeaks(userPeaksData);
+          setUserPeaks(userPeakResponse);
         }
 
         setLoading(false);
@@ -87,13 +86,14 @@ const Peaks = () => {
       <h2 className="page-title">Lista Szczytów Korony Gór Polski</h2>
       <Row>
         {peaks.map((peak) => {
-          const isUserPeak = userPeaks.includes(peak.id);
+          const userPeak = userPeaks.find(up => up.peakId === peak.id);
+          const isUserPeak = Boolean(userPeak);
           return (
             <Col key={peak.id} md={4}>
               <Link to={`/peaks/${peak.id}`} className="text-decoration-none">
                 <Card
                   className={`peak-card ${isUserPeak ? "user-peak" : ""}`}
-                  style={{ backgroundImage: `url(${peak.imageUrl})` }}
+                  style={{ backgroundImage: `url(${isUserPeak ? userPeak.image.base64 : peak.imageUrl})` }}
                 >
                   <Card.ImgOverlay className="card-img-overlay">
                     {isUserPeak && (
@@ -109,7 +109,7 @@ const Peaks = () => {
                     <Card.Text className="peak-info">
                       <strong>Pasmo:</strong> {peak.range}
                       <br />
-                      <strong>Wysokość:</strong> {peak.height} m
+                      <strong>Wysokość:</strong> {peak.height} m n.p.m.
                     </Card.Text>
                   </Card.ImgOverlay>
                 </Card>
