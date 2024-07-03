@@ -7,6 +7,7 @@ import {
   getUserPeaks,
 } from "../../api/dbConnection";
 import { getWikiData } from "../../api/wikiConnection";
+import AscentConfirmForm from "../../Components/AscentConfirmForm/AscentConfirmForm";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -21,6 +22,7 @@ const PeakDetails = () => {
   const [error, setError] = useState(null);
   const [userPeak, setUserPeak] = useState(null);
   const [firstAscent, setFirstAscent] = useState(false);
+  const [showConfirmForm, setShowConfirmForm] = useState(false);
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
@@ -72,6 +74,12 @@ const PeakDetails = () => {
     fetchPeak();
     fetchUserPeaks();
   }, [id, user]);
+
+  const handleShowConfirmForm = (e) => {
+    e.preventDefault();
+    setShowConfirmForm(true);
+
+  }
 
   const handleConfirmClick = async (e) => {
     e.preventDefault();
@@ -126,13 +134,16 @@ const PeakDetails = () => {
                     </Alert>
                   )}
                   {!userPeak && !firstAscent && user && (
-                    <Button
-                      variant="primary"
-                      className="my-3"
-                      onClick={handleConfirmClick}
-                    >
-                      Potwierdź zdobycie szczytu
-                    </Button>
+
+                          !showConfirmForm ?
+                          (<Button
+                            variant="primary"
+                            className="my-3"
+                            onClick={handleShowConfirmForm}
+                        >
+                          Potwierdź zdobycie szczytu
+                        </Button>) :
+                        (<AscentConfirmForm />)
                   )}
                   {!user && (
                     <Alert variant="warning" className="my-3">
