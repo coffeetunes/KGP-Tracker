@@ -10,11 +10,13 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 import { AuthContext } from "../../context/AuthContext";
+import Loader from "../../Components/Loader/Loader";
 
 const PeakDetails = () => {
   const { id } = useParams();
   const [peak, setPeak] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [userDataLoading, setUserDataLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userPeak, setUserPeak] = useState(null);
   const [firstAscent, setFirstAscent] = useState(false);
@@ -55,7 +57,12 @@ const PeakDetails = () => {
           setUserPeak(userPeakData || null);
         } catch (error) {
           console.log(`Błąd podczas ładowania szczytów użytkownika: ${error}`);
+        } finally {
+          setUserDataLoading(false);
         }
+      }
+      else {
+        setUserDataLoading(false);
       }
     };
 
@@ -77,7 +84,7 @@ const PeakDetails = () => {
     }
   };
 
-  if (loading) return <div>Trwa ładowanie informacji...</div>;
+  if (loading || userDataLoading) return <Loader />;
   if (error) return <div>Błąd: {error}</div>;
 
   return (
