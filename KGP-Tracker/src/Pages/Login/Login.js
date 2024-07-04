@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Login.scss"
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getUser } from "../../api/dbConnection";
 import { useAuth } from "../../context/AuthContext";
 import Container from "react-bootstrap/Container";
@@ -13,6 +13,7 @@ const Login = () => {
   const [success, setSuccess] = useState(null);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, login } = useAuth();
 
   useEffect(() => {
@@ -27,7 +28,8 @@ const Login = () => {
         login(user);
         setError(null);
         setSuccess("Logowanie zakończone sukcesem!");
-        setTimeout(() => navigate("/"), 3000);
+        const redirectTo = location.state?.from || '/';
+        setTimeout(() => navigate(redirectTo), 3000);
       } else {
         setError("Nieprawidłowy e-mail lub hasło");
       }
