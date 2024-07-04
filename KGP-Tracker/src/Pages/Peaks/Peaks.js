@@ -10,6 +10,7 @@ import Card from "react-bootstrap/Card";
 import { AuthContext } from "../../context/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import Loader from "../../Components/Loader/Loader";
 
 const Peaks = () => {
   const [peaks, setPeaks] = useState([]);
@@ -74,7 +75,7 @@ const Peaks = () => {
   }, [user]);
 
   if (loading) {
-    return <div>Trwa ładowanie informacji...</div>;
+    return <Loader />;
   }
 
   if (error) {
