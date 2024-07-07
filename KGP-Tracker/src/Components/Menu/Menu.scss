@@ -1,0 +1,46 @@
+/* Menu.scss */
+
+.navbar {
+  background-color: #fff;
+
+  .navbar-brand img {
+    width: 200px;
+  }
+
+  .offcanvas-header {
+    background-color: #f8f9fa;
+  }
+
+  .offcanvas-body {
+    background-color: #f8f9fa;
+  }
+
+  .nav-link {
+    color: #000;
+    &:hover {
+      color: #007bff;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .offcanvas-header,
+  .offcanvas-body {
+    background-color: #f8f9fa;
+  }
+
+  .nav-link {
+    color: #000;
+    &:hover {
+      color: #007bff;
+    }
+  }
+
+  .navbar-nav {
+    align-items: center;
+    gap: 2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 10vh;
+  }
+}
