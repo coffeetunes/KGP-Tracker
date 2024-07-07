@@ -82,7 +82,7 @@ const Login = () => {
               <div className="mt-3 text-center">
                 <p>
                   Nie masz jeszcze konta?{" "}
-                  <Link to="/register">Zarejestruj się!</Link>
+                  <Link to="/register">Zarejestruj&nbsp;się!</Link>
                 </p>
               </div>
             </>
