@@ -14,6 +14,7 @@ const Home = () => {
 
     return (
 <>
+
         <Carousel className="main-carousel">
             <Carousel.Item>
                 <img
@@ -23,9 +24,9 @@ const Home = () => {
                 />
                 <div className="overlay"></div>
                 <Carousel.Caption>
-                    <h3>Główne Hasło 1</h3>
-                    <p>Podhasło 1</p>
-                    <Button variant="primary">Przycisk 1</Button>
+                    <h3>Twój osobisty dziennik wypraw KGP</h3>
+                    <p>Monitoruj swoje zdobycze</p>
+                    <Button variant="primary" as={Link} to="/login" className="carousel-button">Zaloguj się</Button>
                 </Carousel.Caption>
             </Carousel.Item>
             <Carousel.Item>
@@ -36,9 +37,9 @@ const Home = () => {
                 />
                 <div className="overlay"></div>
                 <Carousel.Caption>
-                    <h3>Główne Hasło 2</h3>
-                    <p>Podhasło 2</p>
-                    <Button variant="primary">Przycisk 2</Button>
+                    <h3>Odkrywaj Polskie Góry</h3>
+                    <p>Znajdź i zdobywaj szczyty Korony Gór Polski</p>
+                    <Button variant="primary" as={Link} to="/peaks" className="carousel-button">Sprawdź szczyty</Button>
                 </Carousel.Caption>
             </Carousel.Item>
             <Carousel.Item>
@@ -49,31 +50,13 @@ const Home = () => {
                 />
                 <div className="overlay"></div>
                 <Carousel.Caption>
-                    <h3>Główne Hasło 3</h3>
-                    <p>Podhasło 3</p>
-                    <Button variant="primary">Przycisk 3</Button>
+                    <h3>Zdobądź z nami Koronę Gór Polski</h3>
+                    <p>Utwórz konto i zacznij swoją przygodę z górami!</p>
+                    <Button variant="primary" as={Link} to="/register" className="carousel-button">Zarejestruj się</Button>
                 </Carousel.Caption>
             </Carousel.Item>
         </Carousel>
 
-       {/* <div className="container mt-5">
-
-
-
-            <h1 className="main-heading">Strona Główna</h1>
-
-            {isLoggedIn ? (
-                <div className="welcome-message">
-                    <h2>Cześć, {user.name}!</h2>
-                    <p>Tu w przyszłości pojawią się szczyty z Korony Gór Polski, które zdobędziesz!</p>
-                </div>
-            ) : (
-                <div className="login-prompt">
-                    <p>Zaloguj się, aby przejrzeć zdobyte szczyty.</p>
-                    <Button as={Link} to="/login" variant="primary">Zaloguj się</Button>
-                </div>
-            )}
-        </div>*/}
 </>
     );
 };

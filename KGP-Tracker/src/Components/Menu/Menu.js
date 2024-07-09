@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./Menu.scss";
 import { useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
@@ -12,6 +12,13 @@ const Menu = () => {
   const { isLoggedIn, logout } = useAuth();
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+      document.documentElement.style.setProperty('--navbar-height', `${navbar.offsetHeight}px`);
+    }
+  }, []);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
