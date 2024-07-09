@@ -49,9 +49,9 @@ const Menu = () => {
                   <Nav.Link onClick={() => handleNavigate("/")}>
                     Strona główna
                   </Nav.Link>
-                  <Nav.Link onClick={() => handleNavigate("/about")}>
+{/*                  <Nav.Link onClick={() => handleNavigate("/about")}>
                     O aplikacji
-                  </Nav.Link>
+                  </Nav.Link>*/}
                   <Nav.Link onClick={() => handleNavigate("/peaks")}>
                     Lista szczytów
                   </Nav.Link>
