@@ -66,6 +66,7 @@ const Profile = () => {
                                                 variant="info"
                                                 as={Link}
                                                 to={`/peaks/${peak.id}`}
+                                                className="green-button"
                                             >
                                                 Zobacz szczegóły
                                             </Button>

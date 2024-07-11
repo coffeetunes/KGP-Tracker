@@ -1,3 +1,5 @@
+@import '../../assets/styles/colors.scss';
+
 .main-carousel {
   position: relative;
   flex: 1;
@@ -48,15 +50,7 @@
         max-width: 200px;
         align-self: center;
 
-        &.green-button {
-          background-color: #28a745;
-          border-color: #28a745;
 
-          &:hover {
-            background-color: #218838;
-            border-color: #218838;
-          }
-        }
       }
     }
 
