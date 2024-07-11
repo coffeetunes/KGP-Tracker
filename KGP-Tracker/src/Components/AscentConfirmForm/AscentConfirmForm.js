@@ -78,7 +78,7 @@ const AscentConfirmForm = ({ onSubmit }) => {
                 </Form.Text>
             </Form.Group>
             {error && <Alert variant="danger">{error}</Alert>}
-            <Button type="submit" variant="primary" className="mb-3">
+            <Button type="submit" variant="primary" className="mb-3 green-button">
                 Potwierdź zdobycie szczytu
             </Button>
         </Form>
