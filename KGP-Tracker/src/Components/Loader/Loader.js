@@ -5,7 +5,7 @@ import './Loader.scss';
 
 const Loader = () => (
     <div className="d-flex justify-content-center align-items-center" style={{ height: '80vh' }}>
-        <Triangle color="#3498db" size={150} />
+        <Triangle color="#28a745" size={150} />
     </div>
 );
 
