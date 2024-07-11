@@ -113,7 +113,7 @@ const PeakDetails = () => {
                     )}
                     {!userPeak && !firstAscent && user && (
                         !showConfirmForm ? (
-                            <Button variant="primary" className="my-3" onClick={handleShowConfirmForm}>
+                            <Button variant="primary" className="my-3 green-button" onClick={handleShowConfirmForm}>
                               Potwierdź zdobycie szczytu
                             </Button>
                         ) : (

@@ -1,3 +1,5 @@
+@import '../../assets/styles/colors.scss';
+
 .peak-card {
   position: relative;
   height: 300px !important;
@@ -37,7 +39,7 @@
 
 .user-peak {
   .card-img-overlay {
-    background-color: rgba(0, 128, 0, 0.6);
+    background-color: $primary-color-overlay;
   }
 
   .checkmark-icon {
