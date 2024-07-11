@@ -1,20 +1,83 @@
-.home-container {
+.main-carousel {
+  position: relative;
+  flex: 1;
   text-align: center;
-  padding: 2rem;
 
-  .welcome-message, .login-prompt {
-    margin-top: 2rem;
-  }
+  .carousel-item {
+    position: relative;
+    height: calc(100vh - var(--navbar-height) - var(--footer-height) - 1vh); /*to -1 dodane, żeby nie wyświetlał się pasek przewijania*/
 
-  h1 {
-    margin-bottom: 2rem;
-  }
+    img {
+      height: 100vh;
+      object-fit: cover;
+    }
 
-  p {
-    font-size: 1.2rem;
-  }
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+    }
 
-  .btn-primary {
-    margin-top: 1rem;
+    .carousel-caption {
+      position: absolute;
+      width: 80%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1rem;
+
+      h3, p, button {
+        color: white;
+      }
+
+      h3 {
+        font-size: 2rem;
+      }
+
+      .carousel-button {
+        width: auto;
+        max-width: 200px;
+        align-self: center;
+
+        &.green-button {
+          background-color: #28a745;
+          border-color: #28a745;
+
+          &:hover {
+            background-color: #218838;
+            border-color: #218838;
+          }
+        }
+      }
+    }
+
+    @media (min-width: 768px) {
+      .carousel-caption h3 {
+        font-size: 2.5rem;
+      }
+
+      .carousel-caption p {
+        font-size: 1.5rem;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .carousel-caption h3 {
+        font-size: 4rem;
+      }
+
+      .carousel-caption p {
+        font-size: 2rem;
+      }
+    }
   }
 }
