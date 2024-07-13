@@ -55,7 +55,8 @@ const Register = () => {
       const user = await registerUser(name, email, password);
       if (user) {
         setSuccess('Rejestracja przebiegła pomyślnie!')
-        setTimeout(() => navigate("/login"), 3000);
+        const timer = setTimeout(() => navigate("/login"), 3000);
+        return () => clearTimeout(timer);
       }
     } catch (error) {
       setError(error.message);
@@ -70,63 +71,64 @@ const Register = () => {
           <p className="text-center">Wprowadź dane. Hasło powinno składać się z co najmniej ośmiu znaków, zawierać co najmniej jedną cyfrę i co najmniej jeden znak specjalny.</p>
           {error && <div className="alert alert-danger">{error}</div>}
           {success && <div className="alert alert-success">{success}</div>}
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label htmlFor="name" className="form-label">
-                Imię / nazwa użytkownika
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="email" className="form-label">
-                Adres e-mail
-              </label>
-              <input
-                type="email"
-                className="form-control"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="password" className="form-label">
-                Hasło
-              </label>
-              <input
-                type="password"
-                className="form-control"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="confirmPassword" className="form-label">
-                Potwierdź hasło
-              </label>
-              <input
-                type="password"
-                className="form-control"
-                id="confirmPassword"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
-            </div>
-            <button type="submit" className="btn btn-primary green-button">
-              Zarejestruj
-            </button>
-          </form>
+          { !success &&
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <label htmlFor="name" className="form-label">
+                  Imię / nazwa użytkownika
+                </label>
+                <input
+                    type="text"
+                    className="form-control"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="email" className="form-label">
+                  Adres e-mail
+                </label>
+                <input
+                    type="email"
+                    className="form-control"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="password" className="form-label">
+                  Hasło
+                </label>
+                <input
+                    type="password"
+                    className="form-control"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="confirmPassword" className="form-label">
+                  Potwierdź hasło
+                </label>
+                <input
+                    type="password"
+                    className="form-control"
+                    id="confirmPassword"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                />
+              </div>
+              <button type="submit" className="btn btn-primary green-button">
+                Zarejestruj
+              </button>
+            </form>}
         </Col>
       </Row>
     </Container>
