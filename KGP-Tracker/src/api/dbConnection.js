@@ -29,8 +29,7 @@ export const registerUser = async (name, email, password) => {
     });
 
     if (existingUserResponse.data.length > 0) {
-      alert("Użytkownik z tym adresem e-mail już istnieje.");
-      return;
+      throw new Error("Użytkownik z tym adresem e-mail już istnieje.");
     }
 
     // Rejestracja nowego użytkownika
@@ -41,7 +40,7 @@ export const registerUser = async (name, email, password) => {
     });
     return response.data;
   } catch (error) {
-    throw new Error("Registration error: " + error.message);
+    throw new Error("Błąd rejestracji: " + error.message);
   }
 };
 
