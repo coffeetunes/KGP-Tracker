@@ -96,3 +96,15 @@ export const confirmUserPeak = async (userId, peakId, date, comment, image) => {
     );
   }
 };
+
+//usunięcie informacji o zdobyciu szczytu przez użytkownika
+export const deleteUserPeak = async (userPeaksId) => {
+  try {
+    const response = await dbAxios.delete(`/userPeaks/${userPeaksId}`);
+    return response.status;
+  } catch (error) {
+    throw new Error(
+      `Błąd podczas usuwania informazji o zdobyciu szczytu: ${error.message}`,
+    );
+  }
+}
