@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./PeakDetails.scss";
 import { Link, useParams } from "react-router-dom";
-import { confirmUserPeak, getSinglePeak, getUserPeaks } from "../../api/dbConnection";
+import { confirmUserPeak, getSinglePeak, getUserPeaks, deleteUserPeak } from "../../api/dbConnection";
 import { getWikiData } from "../../api/wikiConnection";
 import AscentConfirmForm from "../../Components/AscentConfirmForm/AscentConfirmForm";
 import Container from "react-bootstrap/Container";
@@ -11,6 +11,7 @@ import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 import { AuthContext } from "../../context/AuthContext";
 import Loader from "../../Components/Loader/Loader";
+import Modal from "react-bootstrap/Modal";
 
 const PeakDetails = () => {
   const { id } = useParams();
@@ -22,6 +23,11 @@ const PeakDetails = () => {
   const [firstAscent, setFirstAscent] = useState(false);
   const [showConfirmForm, setShowConfirmForm] = useState(false);
   const { user } = useContext(AuthContext);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const handleOpenDeleteModal = () => setShowDeleteModal(true);
+  const handleCloseDeleteModal = () => setShowDeleteModal(false);
+
 
   useEffect(() => {
     document.title = `Informacje o szczycie - KGP Tracker`;
@@ -84,10 +90,28 @@ const PeakDetails = () => {
     }
   };
 
+const handleDeleteAscent = async () => {
+  if (!userPeak) return;
+
+  try {
+    await deleteUserPeak(userPeak.id);
+    setUserPeak(null);
+    setShowDeleteModal(false); // zamykamy modal
+  } catch (error) {
+    console.log(`Błąd podczas usuwania: ${error}`);
+    // Możesz pokazać komunikat błędu lub też zamknąć modal
+    setShowDeleteModal(false);
+  }
+};
+
+
+
+
   if (loading || userDataLoading) return <Loader />;
   if (error) return <div>Błąd: {error}</div>;
 
   return (
+  <>
       <Container className="mt-5">
         {peak && (
             <Container className="mt-5 peak-details">
@@ -109,6 +133,10 @@ const PeakDetails = () => {
                           Twój komentarz:
                           <br/>
                           {userPeak.comment}
+                          <br/>
+                           <Button variant="primary" className="my-3" onClick={handleOpenDeleteModal}>
+                           Usuń informacje o zdobyciu szczytu
+                           </Button>
                         </Alert>
                     )}
                     {!userPeak && !firstAscent && user && (
@@ -141,6 +169,23 @@ const PeakDetails = () => {
             </Container>
         )}
       </Container>
+      <Modal show={showDeleteModal} onHide={handleCloseDeleteModal} centered>
+            <Modal.Header closeButton>
+              <Modal.Title>Potwierdzenie usunięcia</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <p>Czy na pewno chcesz usunąć informacje o zdobyciu tego szczytu?</p>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleCloseDeleteModal}>
+                Anuluj
+              </Button>
+              <Button variant="danger" onClick={handleDeleteAscent}>
+                Usuń
+              </Button>
+            </Modal.Footer>
+          </Modal>
+          </>
   );
 };
 
