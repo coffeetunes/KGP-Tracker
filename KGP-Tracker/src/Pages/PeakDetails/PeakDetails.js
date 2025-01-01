@@ -12,6 +12,7 @@ import Alert from "react-bootstrap/Alert";
 import { AuthContext } from "../../context/AuthContext";
 import Loader from "../../Components/Loader/Loader";
 import Modal from "react-bootstrap/Modal";
+import config from '../../config/config';
 
 const PeakDetails = () => {
   const { id } = useParams();
@@ -60,6 +61,9 @@ const PeakDetails = () => {
         try {
           const userPeakResponse = await getUserPeaks(user.id);
           const userPeakData = userPeakResponse.find(up => up.peakId.toString() === id.toString());
+          const dateObj = new Date(userPeakData.date);
+          const formattedDate = dateObj.toLocaleDateString("en-CA"); // "YYYY-MM-DD"
+          userPeakData.date = formattedDate;
           setUserPeak(userPeakData || null);
         } catch (error) {
           console.log(`Błąd podczas ładowania szczytów użytkownika: ${error}`);
@@ -78,17 +82,30 @@ const PeakDetails = () => {
 
   const handleShowConfirmForm = () => setShowConfirmForm(true);
 
-  const handleConfirmClick = async (formData) => {
-    if (user) {
-      try {
-        const newUserPeak = await confirmUserPeak(user.id, id, formData.date, formData.comment, formData.fileInfo);
-        setUserPeak(newUserPeak);
-        setFirstAscent(true);
-      } catch (error) {
-        console.log(`Błąd podczas zatwierdzania zdobycia szczytu: ${error}`);
-      }
-    }
-  };
+const handleConfirmClick = async (formData) => {
+  if (!user) return;
+
+  try {
+    // budujemy obiekt FormData
+    const dataToSend = new FormData();
+    dataToSend.append('userId', user.id);
+    dataToSend.append('peakId', id);
+    dataToSend.append('date', formData.date);
+    dataToSend.append('comment', formData.comment);
+    dataToSend.append('image', formData.file); // klucz "image" musi pasować do upload.single('image') w backendzie
+
+    // teraz wysyłamy w stylu multipart/form-data
+    const newUserPeak = await confirmUserPeak(dataToSend);
+    const dateObj = new Date(newUserPeak.date);
+    const formattedDate = dateObj.toLocaleDateString("en-CA"); // "YYYY-MM-DD"
+    newUserPeak.date = formattedDate;
+    setUserPeak(newUserPeak);
+    setFirstAscent(true);
+  } catch (error) {
+    console.log(`Błąd podczas zatwierdzania zdobycia szczytu: ${error}`);
+  }
+};
+
 
 const handleDeleteAscent = async () => {
   if (!userPeak) return;
@@ -157,14 +174,22 @@ const handleDeleteAscent = async () => {
                         </Alert>
                     )}
                   </div>
-                </Col>
-                <Col md={6}>
-                  {userPeak?.image?.base64 ? (
-                      <img src={userPeak.image.base64} alt={peak.name} className="peak-image" />
-                  ) : peak.imageUrl && (
-                      <img src={peak.imageUrl} alt={peak.name} className="peak-image" />
-                  )}
-                </Col>
+                </Col><Col md={6}>
+                        {userPeak?.imagePath ? (
+                          <img
+                            src={`${config.DB_URL}/uploads/${userPeak.imagePath}`}
+                            alt={peak.name}
+                            className="peak-image"
+                          />
+                        ) : peak.imageUrl && (
+                          <img
+                            src={peak.imageUrl}
+                            alt={peak.name}
+                            className="peak-image"
+                          />
+                        )}
+                      </Col>
+
               </Row>
             </Container>
         )}

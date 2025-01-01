@@ -59,9 +59,11 @@ const Profile = () => {
                             <ListGroup className="w-100">
                                 {userPeaks.map((userPeak) => {
                                     const peak = peaks.find((p) => p.id === userPeak.peakId);
+                                    const dateObj = new Date(userPeak.date);
+                                    const formattedDate = dateObj.toLocaleDateString("en-CA"); // "YYYY-MM-DD"
                                     return (
                                         <ListGroupItem key={userPeak.id} className="d-flex justify-content-between align-items-center">
-                                            <span className="me-3"><strong>{peak.name}</strong> - <span className="d-md-none"><br/></span> Zdobycie: <span className="d-md-none"><br/></span>{userPeak.date}</span>
+                                            <span className="me-3"><strong>{peak.name}</strong> - <span className="d-md-none"><br/></span> Zdobycie: <span className="d-md-none"><br/></span>{formattedDate}</span>
                                             <Button
                                                 variant="info"
                                                 as={Link}

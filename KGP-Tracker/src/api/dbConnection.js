@@ -5,11 +5,8 @@ export const getUser = async (email, password) => {
     const response = await dbAxios.get("/users", {
       params: { email, password },
     });
-    const user = response.data.find(
-      (user) => user.email === email && user.password === password,
-    );
-    if (user) {
-      return user;
+    if (response.data) {
+      return response.data;
     } else {
       console.log("Nieprawidłowy e-mail lub hasło");
       return null;
@@ -23,15 +20,6 @@ export const getUser = async (email, password) => {
 
 export const registerUser = async (name, email, password) => {
   try {
-    // Sprawdzenie, czy użytkownik z podanym adresem e-mail już istnieje
-    const existingUserResponse = await dbAxios.get("/users", {
-      params: { email },
-    });
-
-    if (existingUserResponse.data.length > 0) {
-      throw new Error("Użytkownik z tym adresem e-mail już istnieje.");
-    }
-
     // Rejestracja nowego użytkownika
     const response = await dbAxios.post("/users", {
       name,
@@ -79,23 +67,19 @@ export const getUserPeaks = async (userId) => {
 };
 
 // urposzczone zatwierdzanie zdobycia szczytu
-export const confirmUserPeak = async (userId, peakId, date, comment, image) => {
+export const confirmUserPeak = async (formData) => {
   try {
-    const newUserPeak = {
-      userId,
-      peakId,
-      date,
-      comment,
-      image
-    };
-    await dbAxios.post(`/userPeaks`, newUserPeak);
-    return newUserPeak;
+    const response = await dbAxios.post('/userPeaks', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return response.data;
   } catch (error) {
-    throw new Error(
-      `Błąd podczas zatwierdzania zdobycia szczytu: ${error.message}`,
-    );
+    throw new Error(`Błąd podczas zatwierdzania zdobycia szczytu: ${error.message}`);
   }
 };
+
 
 //usunięcie informacji o zdobyciu szczytu przez użytkownika
 export const deleteUserPeak = async (userPeaksId) => {

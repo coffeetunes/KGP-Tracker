@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import "./Peaks.scss"
+import "./Peaks.scss";
 import { getPeaks, getUserPeaks } from "../../api/dbConnection";
 import { getWikiData } from "../../api/wikiConnection";
 import { Link } from "react-router-dom";
@@ -11,6 +11,9 @@ import { AuthContext } from "../../context/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import Loader from "../../Components/Loader/Loader";
+
+// ZAŁÓŻMY, że masz config z DB_URL
+import config from "../../config/config";
 
 const Peaks = () => {
   const [peaks, setPeaks] = useState([]);
@@ -54,7 +57,7 @@ const Peaks = () => {
                 imageUrl: "",
               };
             }
-          }),
+          })
         );
 
         setPeaks(peaksWithWikiData);
@@ -87,14 +90,25 @@ const Peaks = () => {
       <h2 className="page-title">Lista Szczytów Korony Gór Polski</h2>
       <Row>
         {peaks.map((peak) => {
-          const userPeak = userPeaks.find(up => up.peakId === peak.id);
+          const userPeak = userPeaks.find((up) => up.peakId === peak.id);
           const isUserPeak = Boolean(userPeak);
+
+          // Przygotuj zmienną z adresem tła
+          // Jeśli userPeak istnieje i ma imagePath, to korzystaj z niego
+          // w innym wypadku - wiki imageUrl
+          let backgroundImage;
+          if (isUserPeak && userPeak.imagePath) {
+            backgroundImage = `${config.DB_URL}/uploads/${userPeak.imagePath}`;
+          } else {
+            backgroundImage = peak.imageUrl;
+          }
+
           return (
             <Col key={peak.id} md={4}>
               <Link to={`/peaks/${peak.id}`} className="text-decoration-none">
                 <Card
                   className={`peak-card ${isUserPeak ? "user-peak" : ""}`}
-                  style={{ backgroundImage: `url(${isUserPeak ? userPeak.image.base64 : peak.imageUrl})` }}
+                  style={{ backgroundImage: `url(${backgroundImage})` }}
                 >
                   <Card.ImgOverlay className="card-img-overlay">
                     {isUserPeak && (
